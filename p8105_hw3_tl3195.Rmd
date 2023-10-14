@@ -6,25 +6,63 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggridges)
+library(patchwork)
+
+library(p8105.datasets)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
-## R Markdown
+# Problem 1
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Read in the dataset:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+data("instacart")
+instacart=instacart
 ```
 
-## Including Plots
+Description of dataset:
+This dataset has `r nrow(instacart)` rows and `r ncol(instacart)` columns,  with each row resprenting a single product from an instacart order. 
+Variables include:
+`order_id`: order identifier
+`product_id`: product identifier
+`add_to_cart_order`: the order in which each product was added to the cart
+`reordered`: 1 if this prodcut has been ordered by this user in the past, 0 otherwise
+`user_id`: customer identifier
+`eval_set`: which evaluation set this order belongs in (Note that the data for use in this class is exclusively from the “train” eval_set)
+`order_number`: the order sequence number for this user (1=first, n=nth)
+`order_dow`: the day of the week on which the order was placed
+`order_hour_of_day`: the hour of the day on which the order was placed
+`days_since_prior_order`: days since the last order, capped at 30, NA if order_number=1
+product_name: name of the product
+`aisle_id`: aisle identifier
+`department_id`: department identifier
+`aisle`: the name of the aisle
+`department`: the name of the department
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+The number of aisles and which aisles are the most items ordered from:
+```{r}
+instacart |> 
+  count(aisle) |> 
+  arrange(desc(n))
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+There are `r n_distinct(instacart$aisle)` aisles. The most item are ordered from fresh vegetables aisles. 
