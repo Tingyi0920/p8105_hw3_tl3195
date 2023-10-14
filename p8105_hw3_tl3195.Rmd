@@ -115,12 +115,12 @@ data("brfss_smart2010")
 brfss=brfss_smart2010
 ```
  
-*Data cleaning:
+Data cleaning:
 
-*format the data to use appropriate variable names;
-*focus on the “Overall Health” topic
-*include only responses from “Excellent” to “Poor”
-*organize responses as a factor taking levels ordered from “Poor” to “Excellent”
+format the data to use appropriate variable names;
+focus on the “Overall Health” topic
+include only responses from “Excellent” to “Poor”
+organize responses as a factor taking levels ordered from “Poor” to “Excellent”
 
 Specify response column (show all the values):
 ```{r}
@@ -159,3 +159,22 @@ brfss |>
   filter(n_stats>=7)
 ```
 CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX, and WA are states observed at 7 or more locations in 2010.
+
+Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state.
+```{r}
+dataone = brfss |>
+  filter(response=="Excellent") |>
+  group_by(year, locationabbr) |>
+  summarize(data_value_mean=mean(data_value, na.rm = TRUE))
+```
+
+Make a “spaghetti” plot of this average value over time within a state:
+```{r}
+dataone |>
+  rename("state"="locationabbr") |>
+  ggplot(aes(x=year, y=data_value_mean, color=state)) +
+  geom_point() + geom_line() +
+  theme(legend.position = "bottom")
+```
+
+The average data_value in excellent responses is between year of 2002 to year of 2010. For most of the states, the range of the average data_value for excellent responses is approximately between 17 and 28.
