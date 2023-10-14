@@ -149,3 +149,13 @@ brfss |>
   filter(n_stats>=7)
 ```
 CT, FL, MA, NC, NJ, and PA are states observed at 7 or more locations in 2002.
+
+In 2010, states were observed at 7 or more locations
+```{r}
+brfss |>
+  filter(year==2010) |>
+  group_by(locationabbr) |>
+  summarize(n_stats = n_distinct(locationdesc)) |>
+  filter(n_stats>=7)
+```
+CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX, and WA are states observed at 7 or more locations in 2010.
