@@ -125,8 +125,7 @@ organize responses as a factor taking levels ordered from “Poor” to “Excel
 Specify response column (show all the values):
 ```{r}
 brfss=brfss |>
-  janitor::clean_names() |>
-  mutate(data_value=as.double(data_value))
+  janitor::clean_names()  
 unique(brfss$response)
 ```
 The responses include "Excellent", "Very Good", "Good", "Fair", and "Poor".
