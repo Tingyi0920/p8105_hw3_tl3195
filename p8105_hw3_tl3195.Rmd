@@ -298,3 +298,15 @@ tot_act|>
 ```
 
 For "High School Equivalent" and "More than High School" categories, the total activities for female is higher than the total activities for males. Both females and males at young age have larger total activties in all three education groups. For "More than High School" category, both females and males have a smaller variation in age than other two education groups.
+
+Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex.
+```{r}
+demo_acce|>
+  group_by(sex,education,minute)|>
+  summarise(mims_value=mean(mims_value))|>
+  ggplot(aes(x=minute, y=mims_value, color=sex)) +
+  geom_smooth() + geom_point(alpha=.75) +
+  facet_grid(.~education)
+```
+
+For all three education levels, there seems to be a similar trend where the MIMS value are higher roughly around the 8:30 and 18:30 (500 to 1100 minute) for both females and males. MIMS value start to increase drastically at 4:17 and reaches the peak at 8:30. Then between 8:30 and 18:30, the MIMS value decreases slightly. After 18:30, MIMS value decreases in a substantial trend in all three education levels. For both "High school equivalent" category and "More than high school" category, females seem to have higher MIMS value compared to males between 8:30 and 18:30 since the line for females lies above the line for males. However, for "Less than high school" category, females and males seem to have similar MIMS value between 8:30 and 18:30. It's also apparent that both females and males in "Less than high school" category have higher MIMS values around the peak compared to the other two education levels. This indicates that education level seems to be correlated with the different MIMS values around the peak that lower education level is associated with the higher MIMS values around the peak. 
