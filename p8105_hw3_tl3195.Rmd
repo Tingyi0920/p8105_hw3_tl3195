@@ -138,4 +138,14 @@ brfss=brfss |>
     response %in% c("Poor", "Fair", "Good", "Very Good", "Excellent")) |>
   mutate(response=factor(response, levels=c("Poor", "Fair", "Good", "Very Good", "Excellent")))
 ```
+Therefore, the order now is "Poor", "Fair", "Good", "Very Good", and "Excellent".
 
+In 2002, states were observed at 7 or more locations
+```{r}
+brfss |>
+  filter(year==2002) |>
+  group_by(locationabbr) |>
+  summarize(n_stats = n_distinct(locationdesc)) |>
+  filter(n_stats>=7)
+```
+CT, FL, MA, NC, NJ, and PA are states observed at 7 or more locations in 2002.
