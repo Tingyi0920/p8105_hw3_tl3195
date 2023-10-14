@@ -206,7 +206,8 @@ accelerometer=read_csv("./nhanes_accel.csv") |>
   
 ```
 
-Organize the demographic data:
+Clean the demograhic data:
+
 Include all originally observed variables; 
 Exclude participants less than 21 years of age, and those with missing demographic data;
 Encode data with reasonable variable classes (i.e. not numeric, and using factors with the ordering of tables and plots in mind).
@@ -232,7 +233,7 @@ demographic=demographic|>
   )
 ```
 
-Organize accelerometer data:
+Clean accelerometer data:
 ```{r}
 accelerometer=accelerometer|>
   drop_na()|>
@@ -245,5 +246,11 @@ accelerometer=accelerometer|>
   select(-min)|>
   mutate(minute=as.integer(minute))
   
+```
+
+Merge the demographic data and accelerometer data:
+```{r}
+demo_acce=
+  inner_join(demographic, accelerometer, by="seqn")
 ```
 
